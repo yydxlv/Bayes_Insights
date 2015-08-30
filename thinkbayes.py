@@ -105,7 +105,6 @@ class _DictWrapper(object):
 
     def __init__(self, values=None, name=''):
         """Initializes the distribution.
-
         hypos: sequence of hypotheses
         """
         self.name = name
@@ -136,7 +135,6 @@ class _DictWrapper(object):
 
     def InitSequence(self, values):
         """Initializes with a sequence of equally-likely values.
-
         values: sequence of values
         """
         for value in values:
@@ -144,7 +142,6 @@ class _DictWrapper(object):
 
     def InitMapping(self, values):
         """Initializes with a map from value to probability.
-
         values: map from value to probability
         """
         for value, prob in values.iteritems():
@@ -152,7 +149,6 @@ class _DictWrapper(object):
 
     def InitPmf(self, values):
         """Initializes with a Pmf.
-
         values: Pmf object
         """
         for value, prob in values.Items():
@@ -275,7 +271,6 @@ class _DictWrapper(object):
 
     def Set(self, x, y=0):
         """Sets the freq/prob associated with the value x.
-
         Args:
             x: number value
             y: number freq or prob
@@ -293,7 +288,6 @@ class _DictWrapper(object):
 
     def Mult(self, x, factor):
         """Scales the freq/prob associated with the value x.
-
         Args:
             x: number value
             factor: how much to multiply by
@@ -302,9 +296,7 @@ class _DictWrapper(object):
 
     def Remove(self, x):
         """Removes a value.
-
         Throws an exception if the value is not there.
-
         Args:
             x: value to remove
         """
