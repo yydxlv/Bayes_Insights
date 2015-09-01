@@ -3,13 +3,11 @@ __author__ = 'xilin'
 import thinkbayes
 import thinkplot
 
-
 class Euro(thinkbayes.Suite):
     """Represents hypotheses about the probability of heads."""
 
     def Likelihood(self, data, hypo):
         """Computes the likelihood of the data under the hypothesis.
-
         hypo: integer value of x, the probability of heads (0-100)
         data: string 'H' or 'T'
         """
@@ -90,10 +88,7 @@ def PlotSuites(suites, root):
     thinkplot.PrePlot(len(suites))
     thinkplot.Pmfs(suites)
 
-    thinkplot.Save(root=root,
-                   xlabel='x',
-                   ylabel='Probability',
-                   formats=['pdf', 'eps'])
+    thinkplot.Save(root=root,xlabel='x',ylabel='Probability',formats=['pdf', 'eps'])
 
 
 def main():
