@@ -102,7 +102,6 @@ class Interpolator(object):
 
 class _DictWrapper(object):
     """An object that contains a dictionary."""
-
     def __init__(self, values=None, name=''):
         """Initializes the distribution.
         hypos: sequence of hypotheses

@@ -5,10 +5,8 @@ import thinkplot
 
 class Euro(thinkbayes.Suite):
     """Represents hypotheses about the probability of heads."""
-
     def Likelihood(self, data, hypo):
         """Computes the likelihood of the data under the hypothesis.
-
         hypo: integer value of x, the probability of heads (0-100)
         data: string 'H' or 'T'
         """
@@ -21,10 +19,8 @@ class Euro(thinkbayes.Suite):
 
 class Euro2(thinkbayes.Suite):
     """Represents hypotheses about the probability of heads."""
-
     def Likelihood(self, data, hypo):
         """Computes the likelihood of the data under the hypothesis.
-
         hypo: integer value of x, the probability of heads (0-100)
         data: tuple of (number of heads, number of tails)
         """
@@ -37,7 +33,7 @@ class Euro2(thinkbayes.Suite):
 def Version1():
     suite = Euro(range(0, 101))
     heads, tails = 140, 110
-    dataset = 'H' * heads + 'T' * tails
+    dataset = 'H' * heads + 'T' * tails  # 140 times head and 120 times tail
 
     for data in dataset:
         suite.Update(data)

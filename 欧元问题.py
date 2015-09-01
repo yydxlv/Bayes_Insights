@@ -17,13 +17,11 @@ class Euro(thinkbayes.Suite):
         else:
             return 1-x
 
-
 class Euro2(thinkbayes.Suite):
     """Represents hypotheses about the probability of heads."""
 
     def Likelihood(self, data, hypo):
         """Computes the likelihood of the data under the hypothesis.
-
         hypo: integer value of x, the probability of heads (0-100)
         data: tuple of (number of heads, number of tails)
         """
@@ -32,12 +30,10 @@ class Euro2(thinkbayes.Suite):
         like = x**heads * (1-x)**tails
         return like
 
-
 def UniformPrior():
     """Makes a Suite with a uniform prior."""
     suite = Euro(range(0, 101))
     return suite
-
 
 def TrianglePrior():
     """Makes a Suite with a triangular prior."""
@@ -52,44 +48,34 @@ def TrianglePrior():
 
 def RunUpdate(suite, heads=140, tails=110):
     """Updates the Suite with the given number of heads and tails.
-
     suite: Suite object
     heads: int
     tails: int
     """
     dataset = 'H' * heads + 'T' * tails
-
     for data in dataset:
         suite.Update(data)
-
 
 def Summarize(suite):
     """Prints summary statistics for the suite."""
     print(suite.Prob(50))
-
     print('MLE', suite.MaximumLikelihood())
-
     print('Mean', suite.Mean())
     print('Median', thinkbayes.Percentile(suite, 50))
-
     print('5th %ile', thinkbayes.Percentile(suite, 5))
     print('95th %ile', thinkbayes.Percentile(suite, 95))
-
     print('CI', thinkbayes.CredibleInterval(suite, 90))
 
 
 def PlotSuites(suites, root):
     """Plots two suites.
-
     suite1, suite2: Suite objects
     root: string filename to write
     """
     thinkplot.Clf()
     thinkplot.PrePlot(len(suites))
     thinkplot.Pmfs(suites)
-
     thinkplot.Save(root=root,xlabel='x',ylabel='Probability',formats=['pdf', 'eps'])
-
 
 def main():
     # make the priors
