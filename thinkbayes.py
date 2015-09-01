@@ -144,7 +144,7 @@ class _DictWrapper(object):
         """Initializes with a map from value to probability.
         values: map from value to probability
         """
-        for value, prob in values.iteritems():
+        for value, prob in values.items():
             self.Set(value, prob)
 
     def InitPmf(self, values):
@@ -172,10 +172,8 @@ class _DictWrapper(object):
 
     def Copy(self, name=None):
         """Returns a copy.
-
         Make a shallow copy of d.  If you want a deep copy of d,
         use copy.deepcopy on the whole object.
-
         Args:
             name: string name for the new Hist
         """
@@ -186,9 +184,7 @@ class _DictWrapper(object):
 
     def Scale(self, factor):
         """Multiplies the values by a factor.
-
         factor: what to multiply by
-
         Returns: new object
         """
         new = self.Copy()
@@ -200,9 +196,7 @@ class _DictWrapper(object):
 
     def Log(self, m=None):
         """Log transforms the probabilities.
-        
         Removes values with probability 0.
-
         Normalizes so that the largest logprob is 0.
         """
         if self.log:
@@ -220,9 +214,7 @@ class _DictWrapper(object):
 
     def Exp(self, m=None):
         """Exponentiates the probabilities.
-
         m: how much to shift the ps before exponentiating
-
         If m is None, normalizes so that the largest prob is 1.
         """
         if not self.log:
@@ -258,7 +250,6 @@ class _DictWrapper(object):
 
     def Render(self):
         """Generates a sequence of points suitable for plotting.
-
         Returns:
             tuple of (sorted value sequence, freq/prob sequence)
         """
@@ -313,16 +304,13 @@ class _DictWrapper(object):
 
 class Hist(_DictWrapper):
     """Represents a histogram, which is a map from values to frequencies.
-
     Values can be any hashable type; frequencies are integer counters.
     """
 
     def Freq(self, x):
         """Gets the frequency associated with the value x.
-
         Args:
             x: number value
-
         Returns:
             int frequency
         """
@@ -347,18 +335,15 @@ class Hist(_DictWrapper):
 
 class Pmf(_DictWrapper):
     """Represents a probability mass function.
-    
     Values can be any hashable type; probabilities are floating-point.
     Pmfs are not necessarily normalized.
     """
 
     def Prob(self, x, default=0):
         """Gets the probability associated with the value x.
-
         Args:
             x: number value
             default: value to return if the key is not there
-
         Returns:
             float probability
         """
@@ -374,9 +359,7 @@ class Pmf(_DictWrapper):
 
     def ProbGreater(self, x):
         """Probability that a sample from this Pmf exceeds x.
-
         x: number
-
         returns: float probability
         """
         t = [prob for (val, prob) in self.d.items() if val > x]
@@ -384,9 +367,7 @@ class Pmf(_DictWrapper):
 
     def ProbLess(self, x):
         """Probability that a sample from this Pmf is less than x.
-
         x: number
-
         returns: float probability
         """
         t = [prob for (val, prob) in self.d.items() if val < x]
@@ -394,9 +375,7 @@ class Pmf(_DictWrapper):
 
     def __lt__(self, obj):
         """Less than.
-
         obj: number or _DictWrapper
-
         returns: float probability
         """
         if isinstance(obj, _DictWrapper):
@@ -406,9 +385,7 @@ class Pmf(_DictWrapper):
 
     def __gt__(self, obj):
         """Greater than.
-
         obj: number or _DictWrapper
-
         returns: float probability
         """
         if isinstance(obj, _DictWrapper):
@@ -418,27 +395,21 @@ class Pmf(_DictWrapper):
 
     def __ge__(self, obj):
         """Greater than or equal.
-
         obj: number or _DictWrapper
-
         returns: float probability
         """
         return 1 - (self < obj)
 
     def __le__(self, obj):
         """Less than or equal.
-
         obj: number or _DictWrapper
-
         returns: float probability
         """
         return 1 - (self > obj)
 
     def __eq__(self, obj):
         """Less than.
-
         obj: number or _DictWrapper
-
         returns: float probability
         """
         if isinstance(obj, _DictWrapper):
@@ -448,39 +419,31 @@ class Pmf(_DictWrapper):
 
     def __ne__(self, obj):
         """Less than.
-
         obj: number or _DictWrapper
-
         returns: float probability
         """
         return 1 - (self == obj)
 
     def Normalize(self, fraction=1.0):
         """Normalizes this PMF so the sum of all probs is fraction.
-
         Args:
             fraction: what the total should be after normalization
-
         Returns: the total probability before normalizing
         """
         if self.log:
             raise ValueError("Pmf is under a log transform")
-
         total = self.Total()
         if total == 0.0:
             raise ValueError('total probability is zero.')
             logging.warning('Normalize: total probability is zero.')
             return total
-
         factor = float(fraction) / total
         for x in self.d:
             self.d[x] *= factor
-
         return total
 
     def Random(self):
         """Chooses a random element from this PMF.
-
         Returns:
             float value from the Pmf
         """
@@ -499,7 +462,6 @@ class Pmf(_DictWrapper):
 
     def Mean(self):
         """Computes the mean of a PMF.
-
         Returns:
             float mean
         """
@@ -510,11 +472,9 @@ class Pmf(_DictWrapper):
 
     def Var(self, mu=None):
         """Computes the variance of a PMF.
-
         Args:
             mu: the point around which the variance is computed;
                 if omitted, computes the mean
-
         Returns:
             float variance
         """
@@ -528,7 +488,6 @@ class Pmf(_DictWrapper):
 
     def MaximumLikelihood(self):
         """Returns the value with the highest probability.
-
         Returns: float probability
         """
         prob, val = max((prob, val) for val, prob in self.Items())
@@ -536,12 +495,9 @@ class Pmf(_DictWrapper):
 
     def CredibleInterval(self, percentage=90):
         """Computes the central credible interval.
-
         If percentage=90, computes the 90% CI.
-
         Args:
             percentage: float between 0 and 100
-
         Returns:
             sequence of two floats, low and high
         """
@@ -550,9 +506,7 @@ class Pmf(_DictWrapper):
 
     def __add__(self, other):
         """Computes the Pmf of the sum of values drawn from self and other.
-
         other: another Pmf
-
         returns: new Pmf
         """
         try:
@@ -562,9 +516,7 @@ class Pmf(_DictWrapper):
 
     def AddPmf(self, other):
         """Computes the Pmf of the sum of values drawn from self and other.
-
         other: another Pmf
-
         returns: new Pmf
         """
         pmf = Pmf()
@@ -575,9 +527,7 @@ class Pmf(_DictWrapper):
 
     def AddConstant(self, other):
         """Computes the Pmf of the sum a constant and  values from self.
-
         other: a number
-
         returns: new Pmf
         """
         pmf = Pmf()
@@ -587,9 +537,7 @@ class Pmf(_DictWrapper):
 
     def __sub__(self, other):
         """Computes the Pmf of the diff of values drawn from self and other.
-
         other: another Pmf
-
         returns: new Pmf
         """
         pmf = Pmf()
@@ -600,9 +548,7 @@ class Pmf(_DictWrapper):
 
     def Max(self, k):
         """Computes the CDF of the maximum of k selections from this dist.
-
         k: int
-
         returns: new Cdf
         """
         cdf = self.MakeCdf()
@@ -1106,9 +1052,7 @@ class Suite(Pmf):
 
     def Update(self, data):
         """Updates each hypothesis based on the data.
-
         data: any representation of the data
-
         returns: the normalizing constant
         """
         for hypo in self.Values():
@@ -1118,12 +1062,8 @@ class Suite(Pmf):
 
     def LogUpdate(self, data):
         """Updates a suite of hypotheses based on new data.
-
-        Modifies the suite directly; if you want to keep the original, make
-        a copy.
-
+        Modifies the suite directly; if you want to keep the original, make a copy.
         Note: unlike Update, LogUpdate does not normalize.
-
         Args:
             data: any representation of the data
         """
@@ -1133,7 +1073,6 @@ class Suite(Pmf):
 
     def UpdateSet(self, dataset):
         """Updates each hypothesis based on the dataset.
-
         This is more efficient than calling Update repeatedly because
         it waits until the end to Normalize.
 
@@ -1141,7 +1080,6 @@ class Suite(Pmf):
         a copy.
 
         dataset: a sequence of data
-
         returns: the normalizing constant
         """
         for data in dataset:
@@ -1152,7 +1090,6 @@ class Suite(Pmf):
 
     def LogUpdateSet(self, dataset):
         """Updates each hypothesis based on the dataset.
-
         Modifies the suite directly; if you want to keep the original, make
         a copy.
 
@@ -1165,7 +1102,6 @@ class Suite(Pmf):
 
     def Likelihood(self, data, hypo):
         """Computes the likelihood of the data under the hypothesis.
-
         hypo: some representation of the hypothesis
         data: some representation of the data
         """
@@ -1173,7 +1109,6 @@ class Suite(Pmf):
 
     def LogLikelihood(self, data, hypo):
         """Computes the log likelihood of the data under the hypothesis.
-
         hypo: some representation of the hypothesis
         data: some representation of the data
         """
@@ -1186,7 +1121,6 @@ class Suite(Pmf):
 
     def MakeOdds(self):
         """Transforms from probabilities to odds.
-
         Values with prob=0 are removed.
         """
         for hypo, prob in self.Items():
@@ -1202,7 +1136,6 @@ class Suite(Pmf):
 
 def MakeSuiteFromList(t, name=''):
     """Makes a suite from an unsorted sequence of values.
-
     Args:
         t: sequence of numbers
         name: string name for this suite
@@ -1216,7 +1149,6 @@ def MakeSuiteFromList(t, name=''):
 
 def MakeSuiteFromHist(hist, name=None):
     """Makes a normalized suite from a Hist object.
-
     Args:
         hist: Hist object
         name: string name
@@ -1233,7 +1165,6 @@ def MakeSuiteFromHist(hist, name=None):
 
 def MakeSuiteFromDict(d, name=''):
     """Makes a suite from a map from values to probabilities.
-
     Args:
         d: dictionary that maps values to probabilities
         name: string name for this suite
@@ -1248,7 +1179,6 @@ def MakeSuiteFromDict(d, name=''):
 
 def MakeSuiteFromCdf(cdf, name=None):
     """Makes a normalized Suite from a Cdf object.
-
     Args:
         cdf: Cdf object
         name: string name for the new Suite
@@ -1273,16 +1203,13 @@ class Pdf(object):
 
     def Density(self, x):
         """Evaluates this Pdf at x.
-
         Returns: float probability density
         """
         raise UnimplementedMethodException()
 
     def MakePmf(self, xs, name=''):
         """Makes a discrete version of this Pdf, evaluated at xs.
-
         xs: equally-spaced sequence of values
-
         Returns: new Pmf
         """
         pmf = Pmf(name=name)
@@ -1648,7 +1575,6 @@ class Beta(object):
 
 class Dirichlet(object):
     """Represents a Dirichlet distribution.
-
     See http://en.wikipedia.org/wiki/Dirichlet_distribution
     """
 
